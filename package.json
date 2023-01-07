@@ -1,0 +1,31 @@
+{
+    "name": "ivy_api_angel",
+    "version": "1.0.0",
+    "scripts": {
+        "dev": "npx nodemon --exec python3 index.py",
+        "api": "npx nodemon --exec python3 server.py",
+        "test": "npx nodemon --exec python3 test.py",
+        "wintest": "npx nodemon --exec python test.py",
+        "winapi": "npx nodemon --exec python server.py",
+        "testwin": "npx nodemon --exec python test.py",
+        "apiwin": "npx nodemon --exec python server.py",
+        "pg": "npx nodemon --exec python pg.py"
+    },
+    "dependencies": {
+        "nodemon": "^2.0.14"
+    },
+    "type": "module",
+    "nodemonConfig": {
+        "watch": [
+            "*.py"
+        ],
+        "ignore": [
+            "/resource/*"
+        ],
+        "delay": 1,
+        "execMap": {
+            "pl": "perl"
+        },
+        "ext": "py"
+    }
+}

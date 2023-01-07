@@ -1,0 +1,6 @@
+Flask
+flask-jsonpify
+flask-restx
+pyyaml
+Quart
+psycopg2
