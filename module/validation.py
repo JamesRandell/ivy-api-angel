@@ -1,4 +1,4 @@
-from module.util.console import Log
+from module.util.console import Console
 
 class Validation:
 
@@ -6,14 +6,14 @@ class Validation:
     
 
     def __init__(self, schemaFile):
-        Log.info('Validation instance.................')
+        Console.info('Validation instance.................')
 
         self.model = {}
         self.field_spec = {}
         self.table_spec = {}
         self.database_spec = {}
 
-    def fieldExists(self, field: list):
+    def fieldExists(self, field: dict):
 
 
         for key in field:

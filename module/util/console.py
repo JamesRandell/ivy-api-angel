@@ -1,3 +1,5 @@
+import inspect
+import os
 class Color:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -9,25 +11,51 @@ class Color:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-class Log:
+class Console:
 
-    def log(string):
-        print(f"{Color.OKCYAN}{string}{Color.END}")
+    @classmethod
+    def stack(cls):
+        frame = inspect.stack()[2]
+        filepath= frame.filename
+        lineno = frame.lineno
+        function = frame.function
+        filename = os.path.basename(filepath)
 
-    def warn(string):
-        print(f"{Color.WARNING}{string}{Color.END}")
+        return(f'{Color.HEADER}{Color.BOLD}{filename}:{function}:{lineno}{Color.END}')
 
-    def error(string):
-        print(f"{Color.FAIL}{string}{Color.END}")
+
+    @classmethod
+    def log(cls, string):
+        stack = Console.stack()
+        print(f"{stack}: {Color.OKCYAN}{string}{Color.END}")
+        
+
+    @classmethod
+    def warn(cls, string):
+        stack = Console.stack()
+        print(f"{stack}: {Color.WARNING}{string}{Color.END}")
+
+    @classmethod
+    def error(cls, string):
+        stack = Console.stack()
+        print(f"{stack}: {Color.FAIL}{string}{Color.END}")
     
+    @classmethod
     def fail(self, string):
         self.error(string)
 
-    def ok(string):
-        print(f"{Color.OKGREEN}{string}{Color.END}")
+    @classmethod
+    def ok(cls, string):
+        stack = Console.stack()
+        print(f"{stack}: {Color.OKGREEN}{string}{Color.END}")
 
+    @classmethod
     def success(self, string):
+        stack = Console.stack()
         self.ok(string)
 
-    def info(string):
-        print(f"{Color.OKCYAN}{string}{Color.END}")
+    @classmethod
+    def info(cls, string):
+        
+        stack = Console.stack()
+        print(f"{stack}: {Color.OKCYAN}{string}{Color.END}")

@@ -155,6 +155,6 @@
     },
     "databaseSpec": {
         "type": "postgres",
-        "database": "test"
+        "name": "test"
     }
   }

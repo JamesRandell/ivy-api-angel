@@ -6,7 +6,8 @@ requires = [
     'flask-restx',
     'pyyaml',
     'Quart',
-    'psycopg2'
+    'psycopg2',
+    'jsonschema'
 ]
 
 setup(

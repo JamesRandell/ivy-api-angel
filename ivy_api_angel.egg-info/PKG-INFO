@@ -1,11 +1,7 @@
-Metadata-Version: 1.0
+Metadata-Version: 2.1
 Name: ivy-api-angel
 Version: 0.1
 Summary: Ivy Angel REST interface
-Home-page: UNKNOWN
 Author: James Randell
 Author-email: jamesrandell@me.com
-License: UNKNOWN
-Description: UNKNOWN
 Keywords: Ivy REST API
-Platform: UNKNOWN

@@ -1,4 +1,4 @@
-from module.util.console import Log
+from module.util.console import Console
 import os
 from typing import Any
 
@@ -21,7 +21,7 @@ class File:
 
 
     def _ext_json(self):
-        Log.info(f'Loading json data from "{self._filePath}"')
+        Console.info(f'Loading json data from "{self._filePath}"')
         import json
 
         result = {}
@@ -29,9 +29,9 @@ class File:
             data = open(self._filePath)
             result = json.load(data)
             
-            Log.ok('File opened and parsed')
+            Console.ok('File opened and parsed')
         except:
-            Log.error('Error when opening file')
+            Console.error('Error when opening file')
        
         return result
 

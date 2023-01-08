@@ -1,4 +1,4 @@
-from module.util.console import Log
+from module.util.console import Console
 from module.file import File
 import json
 import jsonschema
@@ -48,7 +48,23 @@ modelSpec = {
             },
         },
         "tableSpec": {"type": "object"},
-        "databaseSpec": {"type": "object"},
+        "databaseSpec": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "description":"Postgres, Maria/MySQL, MSSQL etc",
+                    "type":"string"
+                },
+                "name": {
+                    "description":"The name of the database/source we're using",
+                    "type":"string"
+                }
+            },
+            "required": [
+                    "type",
+                    "name"
+            ]
+        },
     },
     "required": ["fieldSpec","tableSpec","databaseSpec"],
     "additionalProperties": False
@@ -64,7 +80,7 @@ class Dictionary:
 
 
     def __init__(self, schemaFile):
-        Log.info('Dictionary instance.................')
+        Console.info('Dictionary instance.................')
 
         self.model = {}
         self.field_spec = {}
@@ -74,7 +90,7 @@ class Dictionary:
         self.processSchema(schemaFile)
 
     def processSchema(self, schemaFile):
-        Log.info('Dictionary instance process schema')
+        Console.info('Dictionary instance process schema')
 
 
         filePath = self.modelPath + schemaFile
@@ -83,7 +99,7 @@ class Dictionary:
         try:
             jsonschema.validate(instance=model, schema=modelSpec)
         except jsonschema.exceptions.ValidationError as err:
-            Log.error(err)
+            Console.error(err)
             return False
 
 
