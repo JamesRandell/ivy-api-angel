@@ -2,7 +2,7 @@ from module.util.console import Console
 from module.interface.IConnection import Base
 
 import psycopg2
-
+import psycopg2.extras
 
 class Connection(Base,object):
 
@@ -35,7 +35,7 @@ class Connection(Base,object):
 
 
     def query(self, queryDict):
-        cursor = self.connection.cursor()
+        
         self.query_parts_og = queryDict
         result = {}
 
@@ -54,44 +54,67 @@ class Connection(Base,object):
 
         self.query_parts['action'] = self._action(self.query_parts_og['action'])
 
-        #Console.log(self.query_parts_og)
-        Console.log(self.query_parts)
-
-
         do = f"_action_{self.query_parts_og['action']}"
 
         command = ''
         if hasattr(self, do) and callable(func := getattr(self, do)):
             command = func()
 
-        
-        result: any
-
-
         Console.log(f'{command}')
+        success, data = self._run(command)
+        Console.log(success)
+        Console.log(data)
+        return success, data
+
+        
+
+    def _run(self, queryStr):
+        cursor = self.connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        result = {}
+        success: bool
+
         try:
-            cursor.execute(command)
-            result = cursor.fetchall()
+            cursor.execute(queryStr, self.query_parts['data'])
+            success = True
+        except Exception as err:
+            Console.error(f'{err}')
+            Console.error(f'{type(err)}')
+            success = False
+
+        try:
+            data = cursor.fetchall()
+
+            try:
+                id = data[0][ self.query_parts['pk'][0].lower() ]
+            except:
+                pass
+
+            '''
             column_names = [desc[0] for desc in cursor.description]
-            
-            for row in result:
+            print(data)
+            for row in data:
                 f = {}
                 keyIndex = 0
                 for field in column_names:
                     f[field] = row[keyIndex]
 
                     keyIndex = keyIndex+1
-                print(f)
-                result.append(f)
+ 
+                data.append(f)
+            '''
+            
+            
+            
+            result = data
+            result[0][ self.query_parts['pk'][0] ] = id
 
-        except Exception as err:
-            result = False
-            Console.error(f'{err}')
-            Console.error(f'{type(err)}')
+        except:
+            pass
 
-        # close the communication with the PostgreSQL
         cursor.close()
-        return result
+
+        
+        return success, result        
         
 
     def _process_field(self):
@@ -118,7 +141,6 @@ class Connection(Base,object):
 
     def _field(self, fieldArr):
         string = ','.join(fieldArr)
-
         return string
 
 
@@ -146,18 +168,31 @@ class Connection(Base,object):
         return value
 
 
+    def _pk(self, value):
+        return value
+        return ','.join(value)
+
+
     def _action_create(self):
         arr = []
         for field, schema in self.query_parts_og['field'].items():
- 
-            if 'auto' in schema.keys():
-                arr.append(f'{field} SERIAL PRIMARY KEY,')
-            elif schema['type'] in 'int,number':
-                arr.append(f'{field} {schema["type"].upper()},')
-            else:
-                arr.append(f'{field} {schema["type"].upper()}({schema["size"]}),')
 
+            # build up each column with various attributes like, auto, pk, not null etc
+            line = [field]
+
+            if 'auto' in schema.keys():
+                line.append('SERIAL PRIMARY KEY')
+            else:
+                line.append(f'{schema["type"].upper()}')
+
+            if schema['type'] not in 'int,number':
+                line.append(f'({str(schema["size"])})')
+       
+            if 'required' in schema.keys():
+                line.append('NOT NULL')
+            line.append(',')
             
+            arr.append(' '.join(line))
         
         result = ''.join(arr)[:-1]
         self.query_parts['field'] = '(' + result + ')'
@@ -176,9 +211,9 @@ class Connection(Base,object):
     def _action_insert(self):
         valueArr = []
         for field, value in self.query_parts['data'].items():
-            valueArr.append(str(value))
+            valueArr.append(f'%({str(field)})s')
 
-        return self.query_parts['action'] + ' ' + self.query_parts['table'] + ' (' + self.query_parts['field'] + ') VALUES (' + ','.join(valueArr) + ')'
+        return self.query_parts['action'] + ' ' + self.query_parts['table'] + ' (' + self.query_parts['field'] + ') VALUES (' + ','.join(valueArr) + ') RETURNING ' + ','.join(self.query_parts['pk'])
 
 
     def _reset(self):

@@ -1,23 +1,24 @@
 from module.util.console import Console
-
-
-
 from module.datasource import Datasource
 
-Console.log(' ==================================================================================================')
-Console.log('===            New run                                                                         ===')
+Console.log('==================================================================================================')
+Console.log('===                                       New run                                              ===')
 Console.log('==================================================================================================')
 test = Datasource('test.json')
 
-test.drop()
-test.create()
+#test.drop()
+#test.create()
 
-arr = {'addressID':100}
+arr = {'addressID':100,'fdfd':1,'code':'something'}
 
-test.insert(arr)
-test.insert()
-test.insert()
-test.insert()
+result = test.insert(arr)
+Console.log(test.id)
+Console.log(result)
+Console.log(test.error)
+Console.log(test.data)
+#test.insert()
+#test.insert()
+#test.insert()
 
 
 test.where([{'ID',2}])
