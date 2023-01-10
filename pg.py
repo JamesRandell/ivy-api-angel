@@ -21,6 +21,6 @@ Console.log(test.data)
 #test.insert()
 
 
-test.where([{'ID',2}])
-test.field(['ID','addressID','stuff']).select()
-print(test.data)
+#test.where([{'ID',2}])
+#test.field(['ID','addressID','stuff']).select()
+#print(test.data)

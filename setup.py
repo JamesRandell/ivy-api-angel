@@ -7,7 +7,7 @@ requires = [
     'pyyaml',
     'Quart',
     'psycopg2',
-    'jsonschema'
+    'ivyorm'
 ]
 
 setup(

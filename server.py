@@ -7,7 +7,7 @@ from flask_cors import CORS, cross_origin
 from module.base import base
 import json
 
-
+from ivyorm import Datasource
 
 from view.ns_cluster import ns_cluster
 from view.ns_table import ns_table
@@ -18,7 +18,9 @@ app = Flask(__name__)
 #api = Api(app = app) 
 
 
-
+test = Datasource('test.json')
+test.field(['ID'])
+test.select()
 
 api = Api(
     #blueprint,

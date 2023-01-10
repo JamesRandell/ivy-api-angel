@@ -4,4 +4,4 @@ flask-restx
 pyyaml
 Quart
 psycopg2
-jsonschema
+ivyorm
