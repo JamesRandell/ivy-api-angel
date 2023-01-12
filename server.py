@@ -9,21 +9,25 @@ import json
 
 from ivyorm import Datasource
 
-from view.ns_cluster import ns_cluster
-from view.ns_table import ns_table
+from view.ns_company import ns_company
 from view.ns_keyspace import ns_keyspace
-from view.ns_health import ns_health
 
 app = Flask(__name__) 
 #api = Api(app = app) 
 
+db: dict = {
+    "database":"test",
+    "host":"localhost",
+    "user":"root",
+    "password":"root",
+    "port":"5432"
+}
 
-test = Datasource('test.json')
+test = Datasource('model/test.json', db)
 test.field(['ID'])
 test.select()
 
 api = Api(
-    #blueprint,
     app = app,
     version="1.0.0",
     title="API Angel",
@@ -42,10 +46,9 @@ CORS(app, allow_origin="*", allow_methods=["GET", "POST", "DELETE", "OPTIONS"], 
 
 #parser = reqparse.RequestParser()  # initialize
 # APIs are defined under a given namespace, they appear under a given heading in Swagger
-api.add_namespace(ns_cluster)
-api.add_namespace(ns_table)
+api.add_namespace(ns_company)
 api.add_namespace(ns_keyspace)
-api.add_namespace(ns_health)
+
 
 #app.register_blueprint(api_bp, url_prefix='/test')
 

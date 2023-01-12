@@ -1,10 +1,19 @@
 from module.util.console import Console
-from module.datasource import Datasource
+from ivyorm import Datasource
 
 Console.log('==================================================================================================')
 Console.log('===                                       New run                                              ===')
 Console.log('==================================================================================================')
-test = Datasource('test.json')
+
+db: dict = {
+    "database":"test",
+    "host":"localhost",
+    "user":"root",
+    "password":"root",
+    "port":"5432"
+}
+
+test = Datasource('model/test.json', db)
 
 #test.drop()
 #test.create()
