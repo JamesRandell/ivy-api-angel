@@ -1,6 +1,8 @@
 Flask
 flask-jsonpify
 flask-restx
+flask-restplus
+flask_jwt_extended
 pyyaml
 Quart
 psycopg2

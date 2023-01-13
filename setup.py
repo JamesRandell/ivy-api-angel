@@ -4,6 +4,7 @@ requires = [
     'Flask',
     'flask-jsonpify',
     'flask-restx',
+    'flask_jwt_extended',
     'pyyaml',
     'Quart',
     'psycopg2',

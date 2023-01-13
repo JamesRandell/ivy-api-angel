@@ -25,7 +25,7 @@ $ pip install pipreqs
  
 $ pipreqs
  
-# This command will generate requirements.txt file for the particular project.
+# This command will install things listed in the requirements.txt file
 # This helps you to set up your development environment.
 # Run like so
 $ pip install -r requirements.txt
