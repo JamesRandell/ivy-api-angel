@@ -8,7 +8,7 @@ from jose import jwt
 
 # /server.py
 AUTH0_DOMAIN = 'dev-6mab7ukqbwl72vhr.uk.auth0.com'
-API_AUDIENCE = 'dev'
+API_AUDIENCE = 'http://jamesrandell.com'
 ALGORITHMS = ["RS256"]
 
 
@@ -28,16 +28,16 @@ class AuthError(Exception):
 def get_token_auth_header():
     """Obtains the Access Token from the Authorization Header
     """
-    
+
     auth = request.headers.get("x-access-token", None)
-    print(auth)
+
     if not auth:
         
         raise AuthError({"code": "authorization_header_missing",
                         "description":
                             "Authorization header is expected"}, 401)
 
-
+    '''
     parts = auth.split()
 
     if parts[0].lower() != "bearer":
@@ -53,8 +53,10 @@ def get_token_auth_header():
                         "description":
                             "Authorization header must be"
                             " Bearer token"}, 401)
-
+    
     token = parts[1]
+    '''
+    token = auth
     return token
 
 def requires_auth(f):
@@ -64,10 +66,11 @@ def requires_auth(f):
     def decorated(*args, **kwargs):
         
         token = get_token_auth_header()
-        print(token)
+
         jsonurl = urlopen("https://"+AUTH0_DOMAIN+"/.well-known/jwks.json")
-        print(jsonurl)
+        
         jwks = json.loads(jsonurl.read())
+
         unverified_header = jwt.get_unverified_header(token)
         rsa_key = {}
         for key in jwks["keys"]:
@@ -114,11 +117,15 @@ def requires_scope(required_scope):
     Args:
         required_scope (str): The scope required to access the resource
     """
+
     token = get_token_auth_header()
     unverified_claims = jwt.get_unverified_claims(token)
+
     if unverified_claims.get("scope"):
             token_scopes = unverified_claims["scope"].split()
+            print(token_scopes)
             for token_scope in token_scopes:
                 if token_scope == required_scope:
                     return True
     return False
+

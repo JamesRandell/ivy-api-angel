@@ -35,11 +35,6 @@ jwt.init_app(app)
 
 authorizations = {"Bearer": {"type": "apiKey", "in": "header", "name": "x-access-token"}}
 authorizations = {
-    'api_key' : {
-        'type' : 'apiKey',
-        'in' : 'header',
-        'name' : 'x-access-token'
-    },
     'Bearer' : {
         'type' : 'apiKey',
         'in' : 'header',

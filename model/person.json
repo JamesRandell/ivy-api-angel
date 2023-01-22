@@ -1,0 +1,59 @@
+{
+    "fieldSpec": {
+      "id": {
+        "front": {
+          "title": "id",
+          "type": "hidden"
+        },
+        "back": {
+          "type": "int",
+          "size": 10,
+          "auto": true
+        }
+      },
+      "firstname": {
+        "front": {
+          "title": "Firstname",
+          "type": "text"
+        },
+        "back": {
+          "type": "varchar",
+          "size": 55,
+          "required": true    
+        },
+      },
+      "lastname": {
+        "front": {
+          "title": "Lastname",
+          "type": "text"
+        },
+        "back": {
+          "type": "varchar",
+          "size": 55,
+          "required": true
+        }
+      },
+      "email": {
+        "front": {
+          "title": "Email",
+          "type": "text"
+        },
+        "back": {
+          "type": "varchar",
+          "size": 100
+        }
+      }
+    },
+    "tableSpec": {
+      "name": "person",
+      "pk": [
+        "ID"
+      ],
+      "page": 10000,
+      "auto": 0
+    },
+    "databaseSpec": {
+        "type": "postgres",
+        "name": "test"
+    }
+  }

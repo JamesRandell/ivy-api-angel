@@ -3,7 +3,7 @@ from flask_restx import Resource, Api, reqparse, Namespace
 from module.base import base
 import json
 from ivyorm import Datasource
-from auth import requires_auth
+from auth import requires_auth,requires_scope
 
 
 db: dict = {
@@ -34,16 +34,21 @@ class ns_company_company(Resource, base):
         }
     )
     
-    @requires_auth
+    
     def get(self):
+        orm.limit(1)
         orm.select()
         return orm.data, 200
 
-
+    
     def put(self):
         out = 'Something here'
         return out, 200
 
+
+    def __call__(self, *args, **kwargs):
+        print('calling')
+        return self.myfunc(*args, **kwargs)
 
 
 @ns_company.route('/<string:id>')
@@ -58,6 +63,8 @@ class ns_company_single(Resource, base):
         }
     )
     def get(self, id):
+        requires_scope('read')
+        
         orm.where(['ID', id])
         orm.select()
         
@@ -72,7 +79,7 @@ class ns_company_single(Resource, base):
         out = 'Something here'
         return out, 200
 
-
+    
     def post(self):
         out = 'Something here'
         return out, 200
